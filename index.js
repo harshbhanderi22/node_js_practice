@@ -1,33 +1,15 @@
-const fs = require('fs');
-const path = require('path');
+let a = 20;
+let b = 0;
 
-//Path to crud Function
-const dirPath = path.join(__dirname, 'crud');
-
-//Path to data.txt file
-const filepath = `${dirPath}/data.txt`;
-
-//CreateFile
-fs.writeFileSync(filepath, "It is simple data file");
-
-//ReadFile
-fs.readFile(filepath, 'utf8', (erroe,item) => {
-    console.log(item)
+//Worksame as async await, it will return 30 data to waitingtime and we will wait for it using promise
+let waitingtime = new Promise((resolve, reject) => {
+    setTimeout(() => {
+        resolve(30)
+    },2000)
 })
 
-//Update File content
-fs.appendFile(filepath, " and it has nothing else", (error) => {
-    if (!error) {
-        console.log("File Updated")        
-    }
+//Fetch data from Promise, then will only work after it will get data from promise
+waitingtime.then((data) => {
+    b = data;
+    console.log(a + b);
 })
-
-//Rename File
-fs.rename(filepath, `${dirPath}/value.txt`, (error) => {
-    if (!error) {
-        console.log("File Name Updated")
-    }
-})
-
-//To delete file
-// fs.unlinkSync(`${dirPath}/value.txt`)
