@@ -4,8 +4,11 @@ const app = express();
 
 //Using get to display information
 app.get('', (req, resp) => {
-    //Send Response
-   resp.send("It is first page for express")
+
+    //To send request parameter
+    req.query.name = "harsh";
+    //Recieve Response
+   resp.send("It is first page for express " + req.query.name)
 })
 
 //give route to about us which will give this data on about us page
