@@ -1,15 +1,17 @@
-let a = 20;
-let b = 0;
+const express = require('express');
+//To make express executable
+const app = express();
 
-//Worksame as async await, it will return 30 data to waitingtime and we will wait for it using promise
-let waitingtime = new Promise((resolve, reject) => {
-    setTimeout(() => {
-        resolve(30)
-    },2000)
+//Using get to display information
+app.get('', (req, resp) => {
+    //Send Response
+   resp.send("It is first page for express")
 })
 
-//Fetch data from Promise, then will only work after it will get data from promise
-waitingtime.then((data) => {
-    b = data;
-    console.log(a + b);
+//give route to about us which will give this data on about us page
+app.get('/aboutus', (req, resp) => {
+    resp.send("Welcome to about us page")
 })
+
+//Listen server on localhost
+app.listen(5000);
