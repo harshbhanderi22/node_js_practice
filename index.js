@@ -1,11 +1,7 @@
 const fs = require('fs');
-const input = process.argv;
-if (input[2] == "create") {
-    fs.writeFileSync(input[3],input[4])
-}
-else if (input[2] == "remove") {
-    fs.unlinkSync(input[3]);
-}
-else {
-    console.warn("Invalid Command");
+const path = require('path');
+
+const dirpath = path.join(__dirname, 'files');
+for (i = 1; i <= 5; i++){
+    fs.writeFileSync(dirpath + '/file' + i + '.txt', "This is simple text file to understand the use of path module");
 }
