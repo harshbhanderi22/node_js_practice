@@ -1,6 +1,6 @@
 # nodejs_practice
-In this repository, We have use for loop to fetch multiple items from one field.<br>
-Common header files can be made and used in any ejs file. this will help you avoid repeated task and also used to add css in our html(ejs) files<br>
-We can create common files anywhere in views folder and can give any name we want.<br>
-To render common file '-' symbol is used <br>
-We have rendered header file in profile.ejs
+Middelware is used to provie different condtions at the time of loading or accesing particular page<br>
+Example, To access page, user age should be more than 18.<br>
+We want to show our websites in particular companies only.<br>
+In this type of situations we use middleware which check the different condtions provided by us.<br>
+Or we can say to filter reuqest and reponses

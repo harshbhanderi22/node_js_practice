@@ -1,44 +1,28 @@
 const express = require('express');
-//To make express executable
 const app = express();
-const path = require('path');
 
-const webpath = path.join(__dirname, 'webPage');
+//Creating middleware
+const reqMiddle = (req, resp, next) => {
+    if(!req.query.age){
+        resp.send('Please provied age')
+    }
+    else if (req.query.age < 18) {
+        resp.send('You can not access website.');
+        resp.send('Age cannot be less than 18');
+    }
+    else {
+        //It is used to load next page in case of passing all conditions or else page will keep loading 
+        next()
+    }
+}
 
-//Set the engine to tell Node that which engine we are using
-app.set('view engine', 'ejs');
+//To use middleware 
+app.use(reqMiddle);
 
-
-//Load given file at home route
-app.get('', (req, resp) => {
-    resp.sendFile(`${webpath}/index.html`)
+app.get('/', (req, resp) => {
+    //In our case, to experiment middleware, proivide age through URL
+     resp.send('Welcome to Home Page')
 })
 
-//It is compulsory to create folder named view to render this file using engine and file extension should be .ejs
-app.get('/profile', (req, resp) => {
-    const user = {
-        name: "Harsh Bhanderi",
-        branch: 'Engineering',
-        college: 'ppsu',
-        skills :[
-            'C++',
-            'Java',
-            'DSA',
-            'Android'
-        ]
-   }
-    resp.render('profile.ejs', {user}) 
-});
 
-//Load about file and here in url we just need to add about not about.html
-app.get('/about', (req, resp) => {
-    resp.sendFile(`${webpath}/about.html`)
-})
-
-//If url is wrong and not from defined urls
-app.get('*', (req, resp) => {
-    resp.sendFile(`${webpath}/nopage.html`)
-})
-
-app.listen(5000);
-
+app.listen(5000)
