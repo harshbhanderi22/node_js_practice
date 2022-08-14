@@ -1,44 +1,35 @@
 const express = require('express');
-//To make express executable
 const app = express();
-const path = require('path');
+const reqMiddle = require('./middleware');
 
-const webpath = path.join(__dirname, 'webPage');
-
-//Set the engine to tell Node that which engine we are using
-app.set('view engine', 'ejs');
+//Instance of router to use middleware in group
+const route = express.Router();
 
 
-//Load given file at home route
-app.get('', (req, resp) => {
-    resp.sendFile(`${webpath}/index.html`)
+//To use middleware in all pages
+//app.use(reqMiddle);
+
+//This will help you to you middleware in group. In our case we have used middlware in contact and profile page.
+route.use(reqMiddle);
+
+//To apply middlwares in particular pages simply add middleware as a argument in get
+app.get('/', reqMiddle, (req, resp) => {
+    //In our case, to experiment middleware, proivide age through URL
+     resp.send('Welcome to Home Page')
 })
 
-//It is compulsory to create folder named view to render this file using engine and file extension should be .ejs
-app.get('/profile', (req, resp) => {
-    const user = {
-        name: "Harsh Bhanderi",
-        branch: 'Engineering',
-        college: 'ppsu',
-        skills :[
-            'C++',
-            'Java',
-            'DSA',
-            'Android'
-        ]
-   }
-    resp.render('profile.ejs', {user}) 
-});
-
-//Load about file and here in url we just need to add about not about.html
 app.get('/about', (req, resp) => {
-    resp.sendFile(`${webpath}/about.html`)
+      resp.send('Welcome to About Page')
 })
 
-//If url is wrong and not from defined urls
-app.get('*', (req, resp) => {
-    resp.sendFile(`${webpath}/nopage.html`)
+route.get('/profile', (req, resp) => {
+      resp.send('Welcome to Profile Page')
 })
 
-app.listen(5000);
+route.get('/contact', (req, resp) => {
+    resp.send('Welcome to Contact Page')
+})
 
+//route in app
+app.use('/', route);
+app.listen(5000)
