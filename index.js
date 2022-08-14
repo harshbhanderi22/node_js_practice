@@ -19,7 +19,13 @@ app.get('/profile', (req, resp) => {
     const user = {
         name: "Harsh Bhanderi",
         branch: 'Engineering',
-        college: 'ppsu'
+        college: 'ppsu',
+        skills :[
+            'C++',
+            'Java',
+            'DSA',
+            'Android'
+        ]
    }
     resp.render('profile.ejs', {user}) 
 });
