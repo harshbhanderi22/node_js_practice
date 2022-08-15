@@ -1,35 +1,27 @@
-const express = require('express');
-const app = express();
-const reqMiddle = require('./middleware');
+const { MongoClient } = require('mongodb');
+//or we can use const mongoclient = reuire('mongodb').MongoClient
 
-//Instance of router to use middleware in group
-const route = express.Router();
+//URL of our databse
+const url = "mongodb://localhost:27017"
 
+//Connection our client(Node) with server(MongoDB) with given url
+const client = new MongoClient(url);
 
-//To use middleware in all pages
-//app.use(reqMiddle);
+//Created function to get Data
+async function getData() {
 
-//This will help you to you middleware in group. In our case we have used middlware in contact and profile page.
-route.use(reqMiddle);
+      //Connect with client
+      let result = await client.connect();
 
-//To apply middlwares in particular pages simply add middleware as a argument in get
-app.get('/', reqMiddle, (req, resp) => {
-    //In our case, to experiment middleware, proivide age through URL
-     resp.send('Welcome to Home Page')
-})
+      //Connect our client with given database
+      let db = result.db('login');
 
-app.get('/about', (req, resp) => {
-      resp.send('Welcome to About Page')
-})
+      //Fetch the given collection our from database
+      let collection = db.collection('users');
 
-route.get('/profile', (req, resp) => {
-      resp.send('Welcome to Profile Page')
-})
+      //Fetch the data from given collection in array form
+      let response = await collection.find({}).toArray();
+      console.log(response);
+}
 
-route.get('/contact', (req, resp) => {
-    resp.send('Welcome to Contact Page')
-})
-
-//route in app
-app.use('/', route);
-app.listen(5000)
+getData()
