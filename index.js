@@ -1,27 +1,25 @@
-const { MongoClient } = require('mongodb');
-//or we can use const mongoclient = reuire('mongodb').MongoClient
+const { response } = require('express');
+const dbConnect = require('./mongodb');
 
-//URL of our databse
-const url = "mongodb://localhost:27017"
 
-//Connection our client(Node) with server(MongoDB) with given url
-const client = new MongoClient(url);
+//Handling promise in one way
+// dbConnect().then((resp) => {
+//       resp.find().toArray().then((data) => {
+//             console.log(data);
+//       })
+// })
 
-//Created function to get Data
-async function getData() {
+//We can handle promise in this way also. It is a common practice developers follow.
+const main = async () => {
 
-      //Connect with client
-      let result = await client.connect();
+      //Await to connect database
+      let data = await dbConnect();
 
-      //Connect our client with given database
-      let db = result.db('login');
-
-      //Fetch the given collection our from database
-      let collection = db.collection('users');
-
-      //Fetch the data from given collection in array form
-      let response = await collection.find({}).toArray();
+      //await to fetch data and convert it in array form
+      //pass argunment in find to read specific data or put empty bracket() to get all data
+      let response =await data.find({role:'broker'}).toArray();
       console.log(response);
 }
 
-getData()
+main();
+
