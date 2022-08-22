@@ -33,5 +33,15 @@ app.put('/', async (req, resp) => {
     resp.send(result);
 })
 
+app.delete('/', async (req, resp) => {
+    const database = dbConnect();
+    //Rather than other parameters, we can use id from database which can be passed in paramas
+    //Example, const result = await database.deleteOne(_id = new monglodb.ObjectId(req.params.id))
+    const result =await (await database).deleteOne(
+        {"name":"sanket"}
+    )
+    resp.send(result);
+})
+
 
 app.listen(5000);
