@@ -1,25 +1,57 @@
 const mongoose = require('mongoose');
+mongoose.connect('mongodb://localhost:27017/login')
 
-const main = async () => {
-      await mongoose.connect('mongodb://localhost:27017/login')
-      
-      //It is used to create rules, due to below code, we will be only able to enter name in our database.
-      const LoginSchema = mongoose.Schema(
-            {
-                  name:String
-            }
-      )
+const LoginSchema = mongoose.Schema(
+      {
+            name: String,
+            email: String,
+            role:String
+      }
+)
 
-      //Model is used to use schema and enter data with it.
-      //It takes two parameters, name of table and defined schema for it.
+//Same as main function just name changed from mongoose branch.
+//This function is for saving/adding new data in database
+const SaveInDB = async () => {
+
+      //to define model for given table
       const LoginModel = mongoose.model('user', LoginSchema);
 
-      //To add data in table defined in model.
-      //This line will only add name in table as only name field is defined in schema. type field will be ignored
-      const data = new LoginModel({ 'name': 'python', 'type':'programing language' })
-      //Save data through model.
-      const result =await data.save();
+      //Adding data
+      const data =await new LoginModel({
+            name: 'deep',
+            email: 'deep@gmail.com',
+            role:'developer/broker'
+      })
+
+      //Save Data
+      const result = await data.save();
       console.log(result);
 }
 
-main();
+//SaveInDB()
+
+const UpdateInDB = async () => {
+      const LoginModel = mongoose.model('user', LoginSchema);
+      const data =await LoginModel.updateOne(
+            { 'name': 'deep' },
+            {
+                  $set:{'email':'deep@bhanderiinfotech.com'}
+            }
+      )
+       console.log(data);
+}
+
+//UpdateInDB();
+
+const DeleteInDB = async () => {
+      const LoginModel = mongoose.model('user', LoginSchema);
+      const data = await LoginModel.deleteOne(
+            {
+                  'name':'deep'
+            }
+      )
+      console.log(data);
+}
+
+//DeleteInDB();
+ 
