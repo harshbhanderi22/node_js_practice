@@ -22,4 +22,16 @@ app.post('/', async (req, resp) => {
     resp.send(result);
 })
 
+
+app.put('/', async (req, resp) => {
+    const database = dbConnect();
+    const result = await (await database).updateOne(
+        {"name":"sanket"},
+        {$set:{ 'role':'broker'}}
+    )
+    console.log(result);
+    resp.send(result);
+})
+
+
 app.listen(5000);
