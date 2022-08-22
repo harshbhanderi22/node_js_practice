@@ -1,3 +1,3 @@
 # nodejs_practice
 Connect mongoDB in node js<br>
-In this branch, I have learnt about how can we use delete API method to delete data from database, we can use all this API methods directly through, or by passing parameters in url or by body part.
+In this branch, I have learnt about how we can implement mongoose and how it is different from mongoDB and how it can be connected with database and used to add data with particular schemas and models.

@@ -1,25 +1,25 @@
-const { response } = require('express');
-const dbConnect = require('./mongodb');
+const mongoose = require('mongoose');
 
-
-//Handling promise in one way
-// dbConnect().then((resp) => {
-//       resp.find().toArray().then((data) => {
-//             console.log(data);
-//       })
-// })
-
-//We can handle promise in this way also. It is a common practice developers follow.
 const main = async () => {
+      await mongoose.connect('mongodb://localhost:27017/login')
+      
+      //It is used to create rules, due to below code, we will be only able to enter name in our database.
+      const LoginSchema = mongoose.Schema(
+            {
+                  name:String
+            }
+      )
 
-      //Await to connect database
-      let data = await dbConnect();
+      //Model is used to use schema and enter data with it.
+      //It takes two parameters, name of table and defined schema for it.
+      const LoginModel = mongoose.model('user', LoginSchema);
 
-      //await to fetch data and convert it in array form
-      //pass argunment in find to read specific data or put empty bracket() to get all data
-      let response =await data.find({role:'broker'}).toArray();
-      console.log(response);
+      //To add data in table defined in model.
+      //This line will only add name in table as only name field is defined in schema. type field will be ignored
+      const data = new LoginModel({ 'name': 'python', 'type':'programing language' })
+      //Save data through model.
+      const result =await data.save();
+      console.log(result);
 }
 
 main();
-
