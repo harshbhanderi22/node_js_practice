@@ -55,3 +55,11 @@ const DeleteInDB = async () => {
 
 //DeleteInDB();
  
+const FindInDB = async () => {
+      const LoginModel = mongoose.model('user', LoginSchema);
+      //We can also pass argument as above functions to find specific data
+      const data = await LoginModel.find();
+      console.log(data);
+}
+
+//FindInDB();
