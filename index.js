@@ -1,65 +1,22 @@
-const mongoose = require('mongoose');
-mongoose.connect('mongodb://localhost:27017/login')
+const config = require('./config');
+const express = require('express');
+const login = require('./login_model');
+const app = express();
 
-const LoginSchema = mongoose.Schema(
-      {
-            name: String,
-            email: String,
-            role:String
-      }
-)
+app.use(express.json());
+app.post('/',async (req, resp) => {
 
-//Same as main function just name changed from mongoose branch.
-//This function is for saving/adding new data in database
-const SaveInDB = async () => {
+    //We can pass direct data or can pass req.body if we are passing data from body (in postman)
+    const data = new login(
+        {
+            name: 'harsh',
+            email: 'harsh@developer.com',
+            role: 'broker'
+        }
+    )
+    const result =await data.save();
+    console.log(result);
+    resp.send(result);
+})
 
-      //to define model for given table
-      const LoginModel = mongoose.model('user', LoginSchema);
-
-      //Adding data
-      const data =await new LoginModel({
-            name: 'deep',
-            email: 'deep@gmail.com',
-            role:'developer/broker'
-      })
-
-      //Save Data
-      const result = await data.save();
-      console.log(result);
-}
-
-//SaveInDB()
-
-const UpdateInDB = async () => {
-      const LoginModel = mongoose.model('user', LoginSchema);
-      const data =await LoginModel.updateOne(
-            { 'name': 'deep' },
-            {
-                  $set:{'email':'deep@bhanderiinfotech.com'}
-            }
-      )
-       console.log(data);
-}
-
-//UpdateInDB();
-
-const DeleteInDB = async () => {
-      const LoginModel = mongoose.model('user', LoginSchema);
-      const data = await LoginModel.deleteOne(
-            {
-                  'name':'deep'
-            }
-      )
-      console.log(data);
-}
-
-//DeleteInDB();
- 
-const FindInDB = async () => {
-      const LoginModel = mongoose.model('user', LoginSchema);
-      //We can also pass argument as above functions to find specific data
-      const data = await LoginModel.find();
-      console.log(data);
-}
-
-//FindInDB();
+app.listen(5000);
